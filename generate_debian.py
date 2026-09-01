@@ -117,7 +117,9 @@ try:
         print("WARNING: fetch_github_stats returned None")
 
 except Exception as e:
+    import traceback
     print(f"ERROR fetching GitHub stats: {type(e).__name__}: {e}")
+    traceback.print_exc()
     print("Using example data...")
     has_stats = False
     github_stats = None
