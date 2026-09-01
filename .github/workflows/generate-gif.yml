@@ -53,11 +53,18 @@ jobs:
           WALLPAPER: ${{ vars.WALLPAPER || inputs.wallpaper || '' }}
         run: |
           echo "Theme: $THEME  |  Wallpaper: ${WALLPAPER:-default}  |  User: $GITHUB_REPOSITORY_OWNER"
+          
+          # TEMP: gifos expects the token in a .env file (i think)
+          echo "GITHUB_TOKEN=$GITHUB_TOKEN" > .env
+          
           case "$THEME" in
             debian)  python3 generate_debian.py ;;
             default) python3 generate_with_stats.py ;;
             *)       python3 generate_liquid_glass.py ;;
           esac
+
+          # TEMP
+          rm -f .env
 
       - name: Commit and push if changed
         run: |
