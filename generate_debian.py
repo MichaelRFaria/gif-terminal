@@ -410,7 +410,8 @@ t.gen_text(f"\x1b[96m=== GitHub Stats for {USERNAME} ===\x1b[0m", row_num=5)
 t.clone_frame(3)
 
 if has_stats:
-    print(vars(github_stats))
+    print(type(github_stats))
+    print(dir(github_stats))
     repos_count = total_repos if total_repos else github_stats.total_repo_contributions
     stats_lines = [
         f"\x1b[93mName:\x1b[0m        {github_stats.account_name or USERNAME}",
