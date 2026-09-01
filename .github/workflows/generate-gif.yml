@@ -39,6 +39,47 @@ jobs:
       - name: Install dependencies
         run: pip install github-readme-terminal requests python-dotenv Pillow
 
+      - name: Patch gifos zero-division bug
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import gifos.utils.fetch_github_stats as module
+
+          path = Path(module.__file__)
+
+          text = path.read_text()
+
+          old = '''pull_requests_merge_percentage=round(
+                (
+                    user_stats["mergedPullRequests"]["totalCount"]
+                    / user_stats["pullRequests"]["totalCount"]
+                )
+                * 100,
+                2,
+            ),'''
+
+          new = '''pull_requests_merge_percentage=(
+                round(
+                    (
+                        user_stats["mergedPullRequests"]["totalCount"]
+                        / user_stats["pullRequests"]["totalCount"]
+                    )
+                    * 100,
+                    2,
+                )
+                if user_stats["pullRequests"]["totalCount"] > 0
+                else 0.0
+            ),'''
+
+          if old not in text:
+              print(f"ERROR: Expected code not found in {path}")
+              raise SystemExit(1)
+
+          path.write_text(text.replace(old, new))
+
+          print(f"SUCCESS: Patched {path}")
+          PY
+
       - name: Inspect gifos GitHub stats code
         run: |
           python3 - <<'PY'
