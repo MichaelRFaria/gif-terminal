@@ -37,13 +37,24 @@ def get_total_repos(username):
 
 # Try to fetch GitHub statistics
 try:
+    print(f"Fetching GitHub stats for: {USERNAME}")
+    print(f"GITHUB_TOKEN available to Python: {bool(os.environ.get('GITHUB_TOKEN'))}")
+
     github_stats = gifos.utils.fetch_github_stats(user_name=USERNAME)
     has_stats = github_stats is not None
-    if not has_stats:
-        print("Warning: Could not fetch GitHub stats")
-        print("Configure GITHUB_TOKEN in .env file")
+
+    if has_stats:
+        print("SUCCESS: GitHub stats fetched!")
+        print(f"Followers: {github_stats.total_followers}")
+        print(f"Stars: {github_stats.total_stargazers}")
+        print(f"Commits: {github_stats.total_commits_last_year}")
+        print(f"PRs: {github_stats.total_pull_requests_made}")
+        print(f"Issues: {github_stats.total_issues}")
+    else:
+        print("WARNING: fetch_github_stats returned None")
+
 except Exception as e:
-    print(f"Warning: Error fetching GitHub stats: {e}")
+    print(f"ERROR fetching GitHub stats: {type(e).__name__}: {e}")
     print("Using example data...")
     has_stats = False
     github_stats = None
