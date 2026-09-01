@@ -410,15 +410,12 @@ t.gen_text(f"\x1b[96m=== GitHub Stats for {USERNAME} ===\x1b[0m", row_num=5)
 t.clone_frame(3)
 
 if has_stats:
+    print(vars(github_stats))
     repos_count = total_repos if total_repos else github_stats.total_repo_contributions
     stats_lines = [
         f"\x1b[93mName:\x1b[0m        {github_stats.account_name or USERNAME}",
-        f"\x1b[93mFollowers:\x1b[0m   {github_stats.total_followers}",
-        f"\x1b[93mStars:\x1b[0m       {github_stats.total_stargazers}",
-        f"\x1b[93mCommits:\x1b[0m     {github_stats.total_commits_last_year} (last year)",
-        f"\x1b[93mPRs:\x1b[0m         {github_stats.total_pull_requests_made}",
-        f"\x1b[93mIssues:\x1b[0m      {github_stats.total_issues}",
         f"\x1b[93mRepos:\x1b[0m       {repos_count}",
+        f"\x1b[93mCommits:\x1b[0m     {github_stats.total_commits_last_year} (last year)",
         f"\x1b[93mRank:\x1b[0m        {github_stats.user_rank.level} ({github_stats.user_rank.percentile:.1f}%)",
     ]
     if github_stats.languages_sorted:
@@ -460,13 +457,11 @@ t.gen_text("\x1b[96m=== Tech Stack ===\x1b[0m", row_num=3)
 t.clone_frame(3)
 
 skills = [
-    ("\x1b[94mCloud:\x1b[0m       ", "AWS, GCP, OCI, Cloudflare"),
-    ("\x1b[94mDevOps:\x1b[0m      ", "Terraform, Kubernetes, Docker, Git"),
-    ("\x1b[94mCI/CD:\x1b[0m       ", "GitLab, GitHub Actions"),
-    ("\x1b[94mMonitoring:\x1b[0m  ", "Grafana, Prometheus, Jaeger, Loki"),
-    ("\x1b[94mTools:\x1b[0m       ", "Postman, RabbitMQ, MongoDB"),
-    ("\x1b[94mOS:\x1b[0m          ", "macOS, Debian"),
-    ("\x1b[94mLanguages:\x1b[0m   ", "Java, Python"),
+    ("\x1b[94mLanguages:\x1b[0m   ", "Java, TypeScript, JavaScript, Python, C++, PHP, SQL"),
+    ("\x1b[94mFrontend:\x1b[0m    ", "React, Next.js, HTML, CSS, Tailwind CSS"),
+    ("\x1b[94mBackend:\x1b[0m     ", "Spring Boot, NestJS"),
+    ("\x1b[94mDatabases:\x1b[0m   ", "PostgreSQL, MySQL, Oracle"),
+    ("\x1b[94mTools:\x1b[0m       ", "Git, GitHub, Docker, Prisma"),
 ]
 
 for i, (label, value) in enumerate(skills):
