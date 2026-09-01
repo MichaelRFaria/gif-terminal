@@ -53,6 +53,14 @@ jobs:
           WALLPAPER: ${{ vars.WALLPAPER || inputs.wallpaper || '' }}
         run: |
           echo "Theme: $THEME  |  Wallpaper: ${WALLPAPER:-default}  |  User: $GITHUB_REPOSITORY_OWNER"
+
+          if [ -n "$GITHUB_TOKEN" ]; then
+            echo "GITHUB_TOKEN is available"
+          else
+            echo "GITHUB_TOKEN is EMPTY"
+          fi
+
+          python3 -c 'import os; print("Python sees GITHUB_TOKEN:", bool(os.environ.get("GITHUB_TOKEN")))'
           
           # TEMP: gifos expects the token in a .env file (i think)
           echo "GITHUB_TOKEN=$GITHUB_TOKEN" > .env
