@@ -47,38 +47,57 @@ jobs:
           from gifos.utils import fetch_github_stats
 
           path = Path(inspect.getsourcefile(fetch_github_stats))
-
           print(f"Found gifos source: {path}")
 
-          text = path.read_text()
+          lines = path.read_text().splitlines()
 
-          old = '''pull_requests_merge_percentage=round(
-                (
-                    user_stats["mergedPullRequests"]["totalCount"]
-                    / user_stats["pullRequests"]["totalCount"]
-                )
-                * 100,
-                2,
-            ),'''
+          # Find the pull_requests_merge_percentage calculation.
+          start = None
+          for i, line in enumerate(lines):
+              if "pull_requests_merge_percentage=" in line:
+                  start = i
+                  break
 
-          new = '''pull_requests_merge_percentage=(
-                round(
-                    (
-                        user_stats["mergedPullRequests"]["totalCount"]
-                        / user_stats["pullRequests"]["totalCount"]
-                    )
-                    * 100,
-                    2,
-                )
-                if user_stats["pullRequests"]["totalCount"] > 0
-                else 0.0
-            ),'''
-
-          if old not in text:
-              print("ERROR: Expected gifos code was not found.")
+          if start is None:
+              print("ERROR: Could not find pull_requests_merge_percentage.")
               raise SystemExit(1)
 
-          path.write_text(text.replace(old, new))
+          # Print the original section so the Actions log shows exactly
+          # what we are replacing.
+          print("Original calculation:")
+          for i in range(start, min(start + 15, len(lines))):
+              print(f"  {i + 1}: {lines[i]}")
+
+          # Find the end of this keyword argument.
+          # In the installed gifos version, the calculation ends at the
+          # line containing the closing '),' after the 2-decimal round().
+          end = None
+          for i in range(start + 1, min(start + 20, len(lines))):
+              if lines[i].strip() == "),":
+                  end = i
+                  break
+
+          if end is None:
+              print("ERROR: Could not determine end of calculation.")
+              raise SystemExit(1)
+
+          replacement = [
+              '            pull_requests_merge_percentage=(',
+              '                round(',
+              '                    (',
+              '                        user_stats["mergedPullRequests"]["totalCount"]',
+              '                        / user_stats["pullRequests"]["totalCount"]',
+              '                    )',
+              '                    * 100,',
+              '                    2,',
+              '                )',
+              '                if user_stats["pullRequests"]["totalCount"] > 0',
+              '                else 0.0',
+              '            ),',
+          ]
+
+          lines[start:end + 1] = replacement
+          path.write_text("\n".join(lines) + "\n")
 
           print("SUCCESS: Patched gifos zero-division bug.")
           PY
