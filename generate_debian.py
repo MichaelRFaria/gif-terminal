@@ -412,9 +412,9 @@ t.clone_frame(3)
 about_lines = [
     "\x1b[93mName:\x1b[0m        Michael Faria",
     "\x1b[93mRole:\x1b[0m        Software Engineer",
-    "\x1b[93mEducation:\x1b[0m   BSc (Hons) Computer Science — First Class",
+    "\x1b[93mEducation:\x1b[0m   BSc (Hons) Computer Science - First Class",
     "\x1b[93mFocus:\x1b[0m       Full-Stack & Backend Development",
-    "\x1b[93mInterests:\x1b[0m    AI, Software Engineering & New Technologies",
+    "\x1b[93mInterests:\x1b[0m   AI, Software Engineering & New Technologies",
     "\x1b[93mCurrently:\x1b[0m   Building & Learning",
 ]
 
