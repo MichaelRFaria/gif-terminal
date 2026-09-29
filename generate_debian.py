@@ -478,7 +478,7 @@ t.gen_typing_text("cat skills.txt", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 t.gen_text("", row_num=2)
-t.gen_text("\x1b[96m=== Tech Stack ===\x1b[0m", row_num=5)
+t.gen_text("\x1b[96m=== Tech Stack ===\x1b[0m", row_num=3)
 t.clone_frame(3)
 
 skills = [
@@ -494,10 +494,10 @@ for i, (label, value) in enumerate(skills):
     t.clone_frame(3)
 
 t.clone_frame(10)
-t.gen_text("\x1b[96m==================\x1b[0m", row_num=4 + len(skills))
+t.gen_text("\x1b[96m==================\x1b[0m", row_num=5 + len(skills))
 t.clone_frame(5)
 
-final_row = 5 + len(skills)
+final_row = 6 + len(skills)
 t.gen_prompt(row_num=final_row)
 t.gen_typing_text(
     "echo 'Thanks for visiting my profile!'", row_num=final_row, contin=True, speed=1
