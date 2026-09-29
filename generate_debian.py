@@ -400,13 +400,39 @@ t.clone_frame(4)
 t.gen_text("\x1b[92m[  OK  ]\x1b[0m Reached target Graphical Interface.", row_num=2)
 t.clone_frame(8)
 
-# -- Stats command --
+# -- About me --
 t.gen_prompt(row_num=3)
-t.gen_typing_text("github-stats --user " + USERNAME, row_num=3, contin=True, speed=1)
+t.gen_typing_text("whoami", row_num=3, contin=True, speed=1)
 t.clone_frame(5)
 
 t.gen_text("", row_num=4)
-t.gen_text(f"\x1b[96m=== GitHub Stats for {USERNAME} ===\x1b[0m", row_num=5)
+t.gen_text("\x1b[96m=== About Me ===\x1b[0m", row_num=5)
+t.clone_frame(3)
+
+about_lines = [
+    "\x1b[93mName:\x1b[0m        Michael Faria",
+    "\x1b[93mRole:\x1b[0m        Software Engineer",
+    "\x1b[93mEducation:\x1b[0m   BSc (Hons) Computer Science — First Class",
+    "\x1b[93mFocus:\x1b[0m       Full-Stack & Backend Development",
+    "\x1b[93mInterests:\x1b[0m    AI, Software Engineering & New Technologies",
+    "\x1b[93mCurrently:\x1b[0m   Building & Learning",
+]
+
+for i, line in enumerate(about_lines):
+    t.gen_text(line, row_num=6 + i)
+    t.clone_frame(3)
+
+t.clone_frame(10)
+t.gen_text("\x1b[96m================\x1b[0m", row_num=6 + len(about_lines))
+t.clone_frame(20)
+
+# -- Stats command --
+t.gen_prompt(row_num=7 + len(about_lines))
+t.gen_typing_text("github-stats --user " + USERNAME, row_num=7 + len(about_lines), contin=True, speed=1)
+t.clone_frame(5)
+
+t.gen_text("", row_num=8 + len(about_lines))
+t.gen_text(f"\x1b[96m=== GitHub Stats for {USERNAME} ===\x1b[0m", row_num=9 + len(about_lines))
 t.clone_frame(3)
 
 if has_stats:
@@ -434,16 +460,16 @@ else:
     ]
 
 for i, line in enumerate(stats_lines):
-    t.gen_text(line, row_num=6 + i)
+    t.gen_text(line, row_num=10 + len(about_lines) + i)
     t.clone_frame(3)
 
 t.clone_frame(10)
-t.gen_text("\x1b[96m================================\x1b[0m", row_num=6 + len(stats_lines))
+t.gen_text("\x1b[96m================================\x1b[0m", row_num=10 + len(about_lines) + len(stats_lines))
 t.clone_frame(40)
 
-# -- Clear + Skills --
-t.gen_prompt(row_num=7 + len(stats_lines))
-t.gen_typing_text("clear", row_num=7 + len(stats_lines), contin=True, speed=1)
+# -- Clear skills and about me --
+t.gen_prompt(row_num=11 + len(stats_lines) + len(about_lines))
+t.gen_typing_text("clear", row_num=11 + len(stats_lines) + len(about_lines), contin=True, speed=1)
 t.clone_frame(5)
 t.clear_frame()
 
@@ -452,7 +478,7 @@ t.gen_typing_text("cat skills.txt", row_num=1, contin=True, speed=1)
 t.clone_frame(5)
 
 t.gen_text("", row_num=2)
-t.gen_text("\x1b[96m=== Tech Stack ===\x1b[0m", row_num=3)
+t.gen_text("\x1b[96m=== Tech Stack ===\x1b[0m", row_num=5)
 t.clone_frame(3)
 
 skills = [
@@ -465,7 +491,7 @@ skills = [
 
 for i, (label, value) in enumerate(skills):
     t.gen_text(f"{label}{value}", row_num=4 + i)
-    t.clone_frame(2)
+    t.clone_frame(3)
 
 t.clone_frame(10)
 t.gen_text("\x1b[96m==================\x1b[0m", row_num=4 + len(skills))
