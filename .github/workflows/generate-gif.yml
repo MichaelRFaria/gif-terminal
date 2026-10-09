@@ -106,18 +106,24 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-
-          path = Path(
-              "/opt/hostedtoolcache/Python/3.11.16/x64/"
-              "lib/python3.11/site-packages/gifos/utils/fetch_github_stats.py"
-          )
-
+          import importlib.util
+          
+          spec = importlib.util.find_spec("gifos")
+          
+          if spec is None or spec.origin is None:
+              raise SystemExit("The gifos package is not installed in this Python environment.")
+          
+          package_dir = Path(spec.origin).parent
+          path = package_dir / "utils" / "fetch_github_stats.py"
+          
+          if not path.is_file():
+              raise SystemExit(f"Target file not found: {path}")
+          
           lines = path.read_text().splitlines()
-
-          for i in range(285, 305):
+          
+          for i in range(285, min(305, len(lines))):
               print(f"{i + 1}: {lines[i]}")
           PY
-
       - name: Generate GIF
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
